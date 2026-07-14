@@ -78,7 +78,9 @@ def fetch_live_quotes():
             timeout=5,
         )
         resp.raise_for_status()
-        data = resp.json().get("data", {})
+        raw = resp.json()
+        print("DHAN RAW RESPONSE:", raw)  # temporary debug line
+        data = raw.get("data", {})
     except Exception as e:
         print("Error fetching Dhan data:", e)
         return []
