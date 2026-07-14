@@ -78,9 +78,7 @@ def fetch_live_quotes():
             timeout=5,
         )
         resp.raise_for_status()
-        raw = resp.json()
-        print("DHAN RAW RESPONSE:", raw)  # temporary debug line
-        data = raw.get("data", {})
+        data = resp.json().get("data", {})
     except Exception as e:
         print("Error fetching Dhan data:", e)
         return []
@@ -93,7 +91,7 @@ def fetch_live_quotes():
         if not quote:
             continue
         ltp = quote.get("last_price", 0)
-        prev_close = quote.get("prev_close", ltp) or ltp
+        prev_close = quote.get("close", ltp) or ltp
         change = round(ltp - prev_close, 2) if prev_close else 0
         p_change = round((change / prev_close) * 100, 2) if prev_close else 0
         results.append(
