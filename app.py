@@ -17,6 +17,9 @@ HOW TO HOST PUBLICLY (so anyone can visit the site):
 See README.md in this folder - step by step Render.com deployment guide.
 """
 
+import eventlet
+eventlet.monkey_patch()
+
 import os
 import time
 import threading
