@@ -103,6 +103,7 @@ def fetch_live_quotes():
                 "volume": quote.get("volume", 0),
             }
         )
+    print("PROCESSED QUOTES:", results)  # temporary debug line
     return results
 
 
