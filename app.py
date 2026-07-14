@@ -127,7 +127,11 @@ def handle_connect():
     print("Client connected")
 
 
+# Start the background price updater as soon as the module loads,
+# so it works both with "python app.py" AND with gunicorn (Render).
+updater_thread = threading.Thread(target=background_price_updater, daemon=True)
+updater_thread.start()
+
+
 if __name__ == "__main__":
-    updater_thread = threading.Thread(target=background_price_updater, daemon=True)
-    updater_thread.start()
     socketio.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
