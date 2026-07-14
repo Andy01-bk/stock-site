@@ -113,7 +113,7 @@ def background_price_updater():
         quotes = fetch_live_quotes()
         if quotes:
             socketio.emit("price_update", quotes)
-        time.sleep(REFRESH_SECONDS)
+        socketio.sleep(REFRESH_SECONDS)
 
 
 @app.route("/")
@@ -128,8 +128,9 @@ def handle_connect():
 
 # Start the background price updater as soon as the module loads,
 # so it works both with "python app.py" AND with gunicorn (Render).
-updater_thread = threading.Thread(target=background_price_updater, daemon=True)
-updater_thread.start()
+# Using socketio.start_background_task (not a raw Thread) ensures
+# emitted events actually reach connected browsers under eventlet.
+socketio.start_background_task(background_price_updater)
 
 
 if __name__ == "__main__":
